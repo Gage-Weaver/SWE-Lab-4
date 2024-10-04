@@ -1,38 +1,55 @@
 #include <stdio.h>
 
 int main() {
-	float temperature, tempCelsius; //declare a float for the temperature inputted by user and one for the temp in celsius
-	char tempScale; //declare a character for the user to input their temperature scale
+    float temperature, tempCelsius; // Declare a float for the temperature inputted by user and one for the temp in Celsius
+    char tempScale, targetScale; // Declare characters for the user to input their temperature scale and target scale
 
-	printf("Enter the temperature scale (C/F/K): "); //prompt user to input temperature scale
-	scanf(" %c", &tempScale); //scan for input
+    printf("Enter the measured temperature scale (C/F/K): "); // Prompt user to input temperature scale
+    scanf(" %c", &tempScale); // Scan for input
 
-	printf("Enter the temperature: "); //prompt user to input temperature
-	scanf("%f", &temperature); //scan for input
+    printf("Enter the temperature: "); // Prompt user to input temperature
+    scanf("%f", &temperature); // Scan for input
 
+    // Convert to Celsius
+    if (tempScale == 'C') {
+        tempCelsius = temperature; // Already in Celsius
+    } else if (tempScale == 'F') {
+        tempCelsius = (temperature - 32) * (5.0 / 9.0); // Fahrenheit to Celsius
+    } else if (tempScale == 'K') {
+        tempCelsius = (temperature - 273.15); // Kelvin to Celsius
+    } else {
+        printf("Invalid scale entered. Please use C, F, or K.\n"); // Tell user the input was invalid
+        return 1; // Exit the program
+    }
 
-	if (tempScale == 'C') { //if input is already in celsius
-		tempCelsius = temperature; // Already in Celsius
-	} else if (tempScale == 'F') { //if the temp is in fahrenheit
-		tempCelsius = ((temperature - 32) * (5.0 / 9.0)); // Fahrenheit to Celsius
-	} else if (tempScale == 'K') { //if the temp is in kelvin
-		tempCelsius = (temperature - 273.15); // Kelvin to Celsius
-	} else { //if none of these are caught
-		printf("Invalid scale entered. Please use C, F, or K.\n"); //tell user the input was invalid
-		return 1; // Exit the program
-	}
+    printf("Enter the target temperature scale (C/F/K): "); // Prompt for target scale
+    scanf(" %c", &targetScale); // Scan for input
 
-	if (tempCelsius <= 0) { //if temp below or at 0
-		printf("Freezing: it is %.2f degrees Celsius Wear a heavy coat\n", tempCelsius); //tell user its freezing with formatting to only show 2 decimal places 
-	} else if (tempCelsius <= 10) { //if temp is below or at 10 but above 0
-		printf("Cold: it is %.2f degrees Celsius Wear a normal jacket!\n", tempCelsius); //tell user its cold with formatting to only show 2 decimal places 
-	} else if (tempCelsius <= 25) { //if temp is below or at 25 but above 10
-		printf("Comfortable: it is %.2f degrees Celsius, you will be fine to dress normally\n", tempCelsius); //tell user its comfortable with formatting to only show 2 decimal places 
-	} else if (tempCelsius <= 35) { //if temp is below or at 35 but above 25
-		printf("Hot: it is %.2f degrees Celsius, make sure you hydrate\n", tempCelsius); //tell user its hot with formatting to only show 2 decimal places 
-	} else { //if no other conditions are caught it is above 35 degrees
-		printf("Extremely Hot: it is %.2f degrees Celsius do not go outside\n", tempCelsius); //tell user its extremely hot with formatting to only show 2 decimal places 
-	}
+    // Convert to the target scale if needed
+    float targetTemperature;
+    if (targetScale == 'C') {
+        targetTemperature = tempCelsius; // Already in Celsius
+    } else if (targetScale == 'F') {
+        targetTemperature = (tempCelsius * 9.0 / 5.0) + 32; // Celsius to Fahrenheit
+    } else if (targetScale == 'K') {
+        targetTemperature = tempCelsius + 273.15; // Celsius to Kelvin
+    } else {
+        printf("Invalid target scale entered. Please use C, F, or K.\n"); // Tell user the input was invalid
+        return 1; // Exit the program
+    }
 
-	return 0; // Successful program termination
+    // Determine the category and advisory based on Celsius temperature, and format the float so it does not take up a ton of room
+    if (tempCelsius <= 0) {
+        printf("Freezing: it is %.2f degrees %c. Wear a heavy coat.\n", targetTemperature, targetScale); // Freezing
+    } else if (tempCelsius <= 10) {
+        printf("Cold: it is %.2f degrees %c. Wear a normal jacket!\n", targetTemperature, targetScale); // Cold
+    } else if (tempCelsius <= 25) {
+        printf("Comfortable: it is %.2f degrees %c. You will be fine to dress normally.\n", targetTemperature, targetScale); // Comfortable
+    } else if (tempCelsius <= 35) {
+        printf("Hot: it is %.2f degrees %c. Make sure you hydrate.\n", targetTemperature, targetScale); // Hot
+    } else {
+        printf("Extremely Hot: it is %.2f degrees %c. Do not go outside.\n", targetTemperature, targetScale); // Extremely Hot
+    }
+
+    return 0; // terminate program
 }
